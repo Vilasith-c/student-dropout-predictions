@@ -6,27 +6,27 @@ This file records intermediate and final results from experiments for later use 
 
 ## 1. Dataset summary
 
-- **Dataset:** Predict Students' Dropout and Academic Success (UCI). [web:11][web:15]  
-- **Shape:** 4,424 rows × 37 columns (36 features + `Target`). [web:15]  
+- **Dataset:** Predict Students' Dropout and Academic Success (UCI). 
+- **Shape:** 4,424 rows × 37 columns (36 features + `Target`). 
 - **Target distribution (full dataset):**
   - Graduate ≈ 49.9%  
   - Dropout ≈ 32.1%  
   - Enrolled ≈ 17.9%  
-  indicating a mildly imbalanced three-class classification problem. [web:15]
+  indicating a mildly imbalanced three-class classification problem.
 
 ---
 
 ## 2. Experimental setup
 
-- **Train–test split:** 80% train, 20% test, stratified by `Target`. [web:22][web:26]  
+- **Train–test split:** 80% train, 20% test, stratified by `Target`. 
 - **Preprocessing:**
   - CSV loaded with `sep=";"`.  
-  - Any object-type features label-encoded (dataset is mostly numeric already). [web:11][web:15]  
-  - For Logistic Regression, features standardized using `StandardScaler` in a scikit-learn `Pipeline`. [attached_file:1][web:110]  
+  - Any object-type features label-encoded (dataset is mostly numeric already).
+  - For Logistic Regression, features standardized using `StandardScaler` in a scikit-learn `Pipeline`. [attached_file:1]
 - **Evaluation metrics:**  
   - Overall accuracy.  
   - Per-class Precision, Recall, F1-score.  
-  - Macro and weighted F1-scores. [web:22][web:122][web:131]
+  - Macro and weighted F1-scores.
 
 ---
 
@@ -34,8 +34,8 @@ This file records intermediate and final results from experiments for later use 
 
 ### 3.1 Logistic Regression (with StandardScaler)
 
-- **Model:** `LogisticRegression(max_iter=2000, solver="lbfgs")` in a pipeline with `StandardScaler`. [attached_file:1][web:110]  
-- **Test set size:** 885 samples. [web:15]  
+- **Model:** `LogisticRegression(max_iter=2000, solver="lbfgs")` in a pipeline with `StandardScaler`. [attached_file:1]
+- **Test set size:** 885 samples. 
 
 Per-class metrics:
 
@@ -53,7 +53,7 @@ Overall:
 
 ### 3.2 Random Forest (baseline)
 
-- **Model:** `RandomForestClassifier(n_estimators=300, class_weight="balanced", random_state=42, n_jobs=-1)`. [web:118][web:56]  
+- **Model:** `RandomForestClassifier(n_estimators=300, class_weight="balanced", random_state=42, n_jobs=-1)`.  
 
 Per-class metrics:
 
@@ -69,7 +69,7 @@ Overall:
 
 ### 3.3 XGBoost (baseline)
 
-- **Model:** `XGBClassifier(objective="multi:softmax", num_class=3, n_estimators=300, max_depth=5, learning_rate=0.1, subsample=0.8, colsample_bytree=0.8, eval_metric="mlogloss", random_state=42, n_jobs=-1)`. [web:121][web:135]  
+- **Model:** `XGBClassifier(objective="multi:softmax", num_class=3, n_estimators=300, max_depth=5, learning_rate=0.1, subsample=0.8, colsample_bytree=0.8, eval_metric="mlogloss", random_state=42, n_jobs=-1)`. 
 
 Per-class metrics:
 
@@ -94,8 +94,8 @@ Overall:
 Interpretation:
 
 - All three models achieve similar overall accuracy (~0.77).  
-- Random Forest has the **highest accuracy and weighted F1**, while XGBoost has the **best macro F1**, indicating slightly better balance across classes. [web:22][web:56][web:122]  
-- Logistic Regression is a strong baseline but slightly underperforms the tree-based models on macro/weighted F1. [web:22][web:24]
+- Random Forest has the **highest accuracy and weighted F1**, while XGBoost has the **best macro F1**, indicating slightly better balance across classes. 
+- Logistic Regression is a strong baseline but slightly underperforms the tree-based models on macro/weighted F1.
 
 ---
 
@@ -108,7 +108,7 @@ To study the impact of hyperparameter tuning:
     - `n_estimators`: e.g., [300, 500],
     - `max_depth`: e.g., [None, 10, 20],
     - `min_samples_split`: e.g., [2, 5],
-    - `max_features`: e.g., ["sqrt", "log2"]. [web:118][web:149]  
+    - `max_features`: e.g., ["sqrt", "log2"].
   - Record new Accuracy, Macro F1, Weighted F1 and compare to baseline.
 
 - **XGBoost (tuned):**
@@ -117,10 +117,10 @@ To study the impact of hyperparameter tuning:
     - `max_depth`: e.g., [4, 6],
     - `learning_rate`: e.g., [0.05, 0.1],
     - `subsample`: e.g., [0.8, 1.0],
-    - `colsample_bytree`: e.g., [0.6, 0.8]. [web:121][web:135]  
+    - `colsample_bytree`: e.g., [0.6, 0.8].   
   - Record metrics and compare to baseline.
 
-A final table will summarize **Baseline vs Tuned** for each model, and the paper will discuss whether the observed performance gains justify the extra complexity. [web:22][web:24][web:149]
+A final table will summarize **Baseline vs Tuned** for each model, and the paper will discuss whether the observed performance gains justify the extra complexity.
 
 ## 5. Figures generated
 
@@ -132,4 +132,4 @@ A final table will summarize **Baseline vs Tuned** for each model, and the paper
   - `fi_random_forest.png`
   - `fi_xgboost.png`
 
-These plots are stored under `reports/figures/` and will be referenced in the paper to illustrate class-wise performance and the most influential features. [web:22][web:56]
+These plots are stored under `reports/figures/` and will be referenced in the paper to illustrate class-wise performance and the most influential features.

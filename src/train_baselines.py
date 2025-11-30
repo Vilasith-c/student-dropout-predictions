@@ -12,7 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 
-from xgboost import XGBClassifier  # pip install xgboost
+from xgboost import XGBClassifier  
 
 
 FIG_DIR = r"student-dropout-predictions\reports\figures"
@@ -20,7 +20,7 @@ os.makedirs(FIG_DIR, exist_ok=True)
 
 def plot_feature_importance(model, feature_names, title, filename):
     importances = model.feature_importances_
-    indices = np.argsort(importances)[::-1][:15]  # top 15
+    indices = np.argsort(importances)[::-1][:15]  
 
     plt.figure(figsize=(8, 6))
     plt.barh(range(len(indices)),
@@ -137,15 +137,15 @@ def train_xgboost(X_train, X_test, y_train_enc, y_test_enc, class_names, num_cla
 
 
 def main():
-    # 1. Load data
+   
     df = pd.read_csv(r"student-dropout-predictions\data\raw\data.csv", sep=";")
     target_col = "Target"
 
-    # 2. Split features / target
+    
     X = df.drop(columns=[target_col])
     y = df[target_col]
 
-    # 3. Encode any categorical feature columns (defensive)
+    
     cat_cols = X.select_dtypes(include=["object"]).columns
     encoders = {}
     for col in cat_cols:
@@ -153,19 +153,19 @@ def main():
         X[col] = enc.fit_transform(X[col].astype(str))
         encoders[col] = enc
 
-    # 4. Train–test split
+    
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, stratify=y, random_state=42
     )
 
-    # 5. Encode target labels
+   
     y_enc = LabelEncoder()
     y_train_enc = y_enc.fit_transform(y_train)
     y_test_enc = y_enc.transform(y_test)
     class_names = list(y_enc.classes_)
     num_classes = len(class_names)
 
-    # 6. Train three models
+   
     results = {}
 
     acc, f1_m, f1_w = train_logistic_regression(
@@ -183,7 +183,7 @@ def main():
     )
     results["XGBoost"] = [acc, f1_m, f1_w]
 
-    # 7. Comparison table
+   
     results_df = pd.DataFrame.from_dict(
         results,
         orient="index",
@@ -192,7 +192,7 @@ def main():
     print("\n=== Model Comparison (test set) ===")
     print(results_df.round(4))
 
-    # Optionally save to CSV for the paper
+    
     results_df.to_csv("student-dropout-predictions/reports/baseline_results.csv", index=True)
 
     
